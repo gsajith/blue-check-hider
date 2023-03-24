@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import './App.css'
 import { getCurrentTabUId } from './chrome/utils'
+import { Accordion } from './components/Accordion'
 
 export const App = (): JSX.Element => {
   const [names, setNames] = useState<string[]>([])
@@ -29,17 +29,11 @@ export const App = (): JSX.Element => {
   }, [currentTabId])
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h3>{currentTabId}</h3>
-        <ul>
-          {names.map((name) => <li key={name}>{name}</li>)}
-        </ul>
-        <br/><br/>
-        <ul>
-          {allNames.map((name) => <li key={name}>{name}</li>)}
-        </ul>
-      </header>
+    <div>
+      <h3>{currentTabId}</h3>
+      <Accordion items={names} title={'found on this page'} />
+      <br/><br/>
+      <Accordion items={allNames} title={'total found'} />
     </div>
   )
 }

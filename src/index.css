@@ -8,24 +8,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #f4f4f4;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-ul {
-  list-style-type: none;
-  padding-inline-start: 0;
-  margin: 1rem 0;
-}
-
-li {
-  padding: 0.25rem;
-}
-
-h3,
-p {
-  margin: 0;
+body {
+  padding: 14px
 }
