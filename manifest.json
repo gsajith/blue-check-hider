@@ -25,7 +25,8 @@
     "type": "module"
   },
   "action": {
-    "default_popup": "popup/popup.html"
+    "default_popup": "popup/popup.html",
+    "default_icon": "images/icon-128.png"
   },
   "permissions": ["activeTab", "storage"],
   "host_permissions": ["https://developer.chrome.com/*"]
