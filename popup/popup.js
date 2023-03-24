@@ -1,5 +1,12 @@
+const queryOptions = { active: true, lastFocusedWindow: true };
+const [activeTab] = await chrome.tabs.query(queryOptions);
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.from === "content" && message.type === "parsed-page") {
+  if (
+    message.from === "content" &&
+    message.type === "parsed-page" &&
+    sender.tab.id === activeTab.id
+  ) {
     const collator = new Intl.Collator();
     var names = message.data.names;
     names.sort((a, b) => collator.compare(a.title, b.title));

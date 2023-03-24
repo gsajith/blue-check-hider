@@ -1,20 +1,5 @@
 {
   // TODO: These functions seems brittle
-  const getUsernameForCheckSvg = (checkSvg) => {
-    const seventhParent =
-      checkSvg.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
-        .parentNode;
-    if (seventhParent.dataset.testid === "User-Name") {
-      // Name in timeline post
-      return seventhParent.children[1].children[0].children[0].children[0]
-        .children[0].children[0].innerHTML;
-    } else {
-      // User cell in side panel or 'Connect' page — suggested users
-      const sixthParent = seventhParent.children[0];
-      return sixthParent.children[1].children[0].children[0].children[0]
-        .children[0].children[0].innerHTML;
-    }
-  };
   const getUsernameFromUserName = (userName) => {
     return userName.children[0].children[0].children[1].children[0].children[0]
       .children[0].children[0].innerHTML;
@@ -55,8 +40,6 @@
         checkNames.add(getUsernameFromUser_Name(user_name));
       }
     });
-
-    console.log(checkNames);
 
     chrome.runtime.sendMessage(
       {
