@@ -13,6 +13,19 @@
     return user_name.children[1].children[0].children[0].children[0].children[0]
       .children[0].innerHTML;
   };
+  const updateStoredCheckNames = async (checkNames) => {
+    const storedNames = await chrome.storage.local.get("storedBlueCheckNames");
+
+    var allNames = new Set([...checkNames]);
+
+    if (storedNames.storedBlueCheckNames) {
+      allNames = new Set([...allNames, ...storedNames.storedBlueCheckNames]);
+    }
+
+    chrome.storage.local.set({
+      storedBlueCheckNames: [...allNames],
+    });
+  };
 
   const readPage = () => {
     const UserNames = document.querySelectorAll('[data-testid="UserName"]');
@@ -41,6 +54,7 @@
       }
     });
 
+    updateStoredCheckNames(checkNames);
     chrome.runtime.sendMessage(
       {
         from: "content",

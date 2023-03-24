@@ -27,6 +27,6 @@
   "action": {
     "default_popup": "popup/popup.html"
   },
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "storage"],
   "host_permissions": ["https://developer.chrome.com/*"]
 }
