@@ -32,3 +32,4 @@ Blue check blocker is a Chrome Extension which detects and creates a block-list 
 
 - [Blue Blocker](https://github.com/kheina-com/Blue-Blocker/): Chrome and Firefox extension. Only blocks users that you come across.
 - [Twitter Block Chain](https://github.com/ceceradio/twitter-block-chain): Mass block all users on a followers/following page.
+- [Block The Blue](https://twitter.com/BlockTheBlue): Block list using [theblockbot.com](https://www.theblockbot.com/show-blocks/9BjDYX6HOyx7e4_4NT6-Y4YylY3UmpojDxvo6Zu8) to block 282,000+ Twitter Blue users.
