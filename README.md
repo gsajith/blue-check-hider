@@ -2,6 +2,8 @@
 
 Blue check blocker is a Chrome Extension which detects and creates a block-list of verified users on Twitter.
 
+> :warning: **This project has been paused. Use [Block The Blue](https://twitter.com/BlockTheBlue)!**
+
 ---
 
 ## Development
