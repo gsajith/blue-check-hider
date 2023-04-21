@@ -1,4 +1,4 @@
-# Blue Check Hiderx
+# Blue Check Hider
 
 ![Icon](./public/icon-128.png)
 
