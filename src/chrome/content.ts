@@ -72,6 +72,8 @@
       if (username.querySelectorAll(checkSelector).length > 0) {
         const extractedName = getUsernameFromUsername(username)
         if (shouldHide === true) {
+          const hideStyle = 'display: none;'
+          // const hideStyle = 'background-color: #345345;'
           const parentContainer = username.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement
           if (parentContainer !== undefined && parentContainer != null) {
             const hiddenDiv = document.createElement('div')
@@ -83,19 +85,19 @@
               parentContainer.appendChild(hiddenDiv)
               document.getElementById(id)?.addEventListener('click', (e) => {
                 e.preventDefault()
-                parentContainer.children[0].setAttribute('style', '')
+                parentContainer.children[0].lastElementChild?.setAttribute('style', '')
                 parentContainer.children[1].setAttribute('style', 'display: none;')
               })
-              parentContainer.children[0].setAttribute('style', 'display: none;;')
+              parentContainer.children[0].lastElementChild?.setAttribute('style', hideStyle)
             } else if (parentContainer.children.length === 4) {
               // Quote tweet on timeline
               parentContainer.insertBefore(hiddenDiv, parentContainer.children[3])
               document.getElementById(id)?.addEventListener('click', (e) => {
                 e.preventDefault()
-                parentContainer.children[2].setAttribute('style', '')
+                parentContainer.children[2].lastElementChild?.setAttribute('style', '')
                 parentContainer.children[3].setAttribute('style', 'display: none;')
               })
-              parentContainer.children[2].setAttribute('style', 'display: none;')
+              parentContainer.children[2].lastElementChild?.setAttribute('style', hideStyle)
             }
           }
         }
