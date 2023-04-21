@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Blue Check Blocker",
+  "name": "Blue Check Hider",
   "version": "1.0",
-  "description": "Identify and block Twitter Blue users",
+  "description": "Identify and hide Twitter Blue users",
   "permissions": ["activeTab", "storage"],
   "icons": {
     "16": "icon-16.png",
@@ -34,6 +34,6 @@
       "48": "icon-48.png",
       "128": "icon-128.png"
     },
-    "default_title": "Blue Check Blocker"
+    "default_title": "Blue Check Hider"
   }
 }

@@ -2,7 +2,7 @@ import { type ChromeMessage, Sender } from '../types'
 type MessageResponse = (response?: any) => void
 
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('intsalled')
+  console.log('Installed')
 })
 
 chrome.runtime.onMessage.addListener(

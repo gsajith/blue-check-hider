@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Name } from './Name'
 
 interface AccordionProps {
   items: string[]
@@ -41,6 +42,8 @@ const AccordionItemsWrapper = styled.div`
   border-radius: 6px;
   color: black;
   min-height: 1px;
+  max-height: 200px;
+  overflow-y: scroll;
 `
 
 export const Accordion = (props: AccordionProps): JSX.Element => {
@@ -49,7 +52,7 @@ export const Accordion = (props: AccordionProps): JSX.Element => {
       <AccordionTitleCount>{props.items.length}</AccordionTitleCount>{props.title}
     </AccordionHeader>
     <AccordionItemsWrapper>
-      {props.items.map((name) => <div key={name}>{name}</div>)}
+      {props.items.map((name) => <Name key={name}>{name}</Name>)}
     </AccordionItemsWrapper>
   </AccordionWrapper>)
 }

@@ -28,9 +28,23 @@
     })
   }
 
+  let unhideCount = 0
+
+  let shouldHide:(boolean | null) = null
+
+  chrome.storage.local.get('hidingEnabled', (result) => {
+    if (result.hidingEnabled !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      shouldHide = result.hidingEnabled
+    }
+  })
+
   const readPage = (): void => {
+    // Detects profile page header blue check
     const UserNames = document.querySelectorAll('[data-testid="UserName"]')
+    // Detects "You might like" page blue checks
     const UserCells = document.querySelectorAll('[data-testid="UserCell"]')
+    // Detects feed blue checks
     const Usernames = document.querySelectorAll('[data-testid="User-Name"]')
 
     const checkSelector = '[data-testid="icon-verified"]'
@@ -39,18 +53,41 @@
 
     UserNames.forEach((userName) => {
       if (userName.querySelectorAll(checkSelector).length > 0) {
+        // This is on profile page, nothing to do here
+        // userName.setAttribute('style', 'display: none;')
         checkNames.add(getUsernameFromUserName(userName))
       }
     })
 
     UserCells.forEach((userCell) => {
       if (userCell.querySelectorAll(checkSelector).length > 0) {
+        if (shouldHide === true) {
+          userCell.setAttribute('style', 'display: none;')
+        }
         checkNames.add(getUsernameFromUserCell(userCell))
       }
     })
 
     Usernames.forEach((username) => {
       if (username.querySelectorAll(checkSelector).length > 0) {
+        if (shouldHide === true) {
+          const parentContainer = username.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement
+          // parentContainer?.setAttribute('style', 'max-height: 20px;overflow: hidden; color: white;')
+          if (parentContainer !== undefined && parentContainer != null) {
+            const hiddenDiv = document.createElement('div')
+            const id = `unhide-${unhideCount++}`
+            hiddenDiv.setAttribute('style', 'padding: 12px; font-family: sans-serif; color: #1d9bf0; border-bottom: 1px solid #1d9bf0;opacity: 0.5;')
+            hiddenDiv.innerHTML = 'Hidden by extension <u id="' + id + '" style="cursor: pointer;">Show</u>'
+            if (parentContainer.children.length === 1) {
+              parentContainer.appendChild(hiddenDiv)
+              document.getElementById(id)?.addEventListener('click', () => {
+                parentContainer.children[0].setAttribute('style', '')
+                parentContainer.children[1].setAttribute('style', 'display: none;')
+              })
+              parentContainer.children[0].setAttribute('style', 'display: none;')
+            }
+          }
+        }
         checkNames.add(getUsernameFromUsername(username))
       }
     })
@@ -69,7 +106,7 @@
   }
 
   readPage()
-  setInterval(readPage, 1000)
+  setInterval(readPage, 250)
 }
 
 export { }
