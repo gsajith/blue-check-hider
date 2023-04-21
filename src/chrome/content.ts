@@ -70,25 +70,36 @@
 
     Usernames.forEach((username) => {
       if (username.querySelectorAll(checkSelector).length > 0) {
+        const extractedName = getUsernameFromUsername(username)
         if (shouldHide === true) {
           const parentContainer = username.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement?.parentElement
-          // parentContainer?.setAttribute('style', 'max-height: 20px;overflow: hidden; color: white;')
           if (parentContainer !== undefined && parentContainer != null) {
             const hiddenDiv = document.createElement('div')
             const id = `unhide-${unhideCount++}`
             hiddenDiv.setAttribute('style', 'padding: 12px; font-family: sans-serif; color: #1d9bf0; border-bottom: 1px solid #1d9bf0;opacity: 0.5;')
-            hiddenDiv.innerHTML = 'Hidden by extension <u id="' + id + '" style="cursor: pointer;">Show</u>'
+            hiddenDiv.innerHTML = 'Blue check ' + extractedName + ' hidden by extension <u id="' + id + '" style="cursor: pointer;">Show</u>'
             if (parentContainer.children.length === 1) {
+              // Single tweet on Timeline
               parentContainer.appendChild(hiddenDiv)
-              document.getElementById(id)?.addEventListener('click', () => {
+              document.getElementById(id)?.addEventListener('click', (e) => {
+                e.preventDefault()
                 parentContainer.children[0].setAttribute('style', '')
                 parentContainer.children[1].setAttribute('style', 'display: none;')
               })
-              parentContainer.children[0].setAttribute('style', 'display: none;')
+              parentContainer.children[0].setAttribute('style', 'display: none;;')
+            } else if (parentContainer.children.length === 4) {
+              // Quote tweet on timeline
+              parentContainer.insertBefore(hiddenDiv, parentContainer.children[3])
+              document.getElementById(id)?.addEventListener('click', (e) => {
+                e.preventDefault()
+                parentContainer.children[2].setAttribute('style', '')
+                parentContainer.children[3].setAttribute('style', 'display: none;')
+              })
+              parentContainer.children[2].setAttribute('style', 'display: none;')
             }
           }
         }
-        checkNames.add(getUsernameFromUsername(username))
+        checkNames.add(extractedName)
       }
     })
 
