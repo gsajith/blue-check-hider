@@ -30,12 +30,20 @@
 
   let unhideCount = 0
 
-  let shouldHide:(boolean | null) = null
+  let shouldHide: (boolean | null) = null
+  let fullyHide: (boolean | null) = null
 
   chrome.storage.local.get('hidingEnabled', (result) => {
     if (result.hidingEnabled !== undefined) {
       // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
       shouldHide = result.hidingEnabled
+    }
+  })
+
+  chrome.storage.local.get('fullyHide', (result) => {
+    if (result.fullyHide !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      fullyHide = result.fullyHide
     }
   })
 
@@ -79,24 +87,28 @@
             const hiddenDiv = document.createElement('div')
             const id = `unhide-${unhideCount++}`
             hiddenDiv.setAttribute('style', 'padding: 12px; font-family: sans-serif; color: #1d9bf0; border-bottom: 1px solid #1d9bf0;opacity: 0.5;')
-            hiddenDiv.innerHTML = 'Blue check ' + extractedName + ' hidden by extension <u id="' + id + '" style="cursor: pointer;">Show</u>'
+            hiddenDiv.innerHTML = extractedName + ' hidden by extension <u id="' + id + '" style="cursor: pointer;">Show</u>'
             if (parentContainer.children.length === 1) {
               // Single tweet on Timeline
-              parentContainer.appendChild(hiddenDiv)
-              document.getElementById(id)?.addEventListener('click', (e) => {
-                e.preventDefault()
-                parentContainer.children[0].lastElementChild?.setAttribute('style', '')
-                parentContainer.children[1].setAttribute('style', 'display: none;')
-              })
+              if (fullyHide === false) {
+                parentContainer.appendChild(hiddenDiv)
+                document.getElementById(id)?.addEventListener('click', (e) => {
+                  e.preventDefault()
+                  parentContainer.children[0].lastElementChild?.setAttribute('style', '')
+                  parentContainer.children[1].setAttribute('style', 'display: none;')
+                })
+              }
               parentContainer.children[0].lastElementChild?.setAttribute('style', hideStyle)
             } else if (parentContainer.children.length === 4) {
               // Quote tweet on timeline
-              parentContainer.insertBefore(hiddenDiv, parentContainer.children[3])
-              document.getElementById(id)?.addEventListener('click', (e) => {
-                e.preventDefault()
-                parentContainer.children[2].lastElementChild?.setAttribute('style', '')
-                parentContainer.children[3].setAttribute('style', 'display: none;')
-              })
+              if (fullyHide === false) {
+                parentContainer.insertBefore(hiddenDiv, parentContainer.children[3])
+                document.getElementById(id)?.addEventListener('click', (e) => {
+                  e.preventDefault()
+                  parentContainer.children[2].lastElementChild?.setAttribute('style', '')
+                  parentContainer.children[3].setAttribute('style', 'display: none;')
+                })
+              }
               parentContainer.children[2].lastElementChild?.setAttribute('style', hideStyle)
             }
           }

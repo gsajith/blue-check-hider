@@ -56,9 +56,9 @@ const ToggleSwitch = ({ onText, offText, handleChecked, checked }: ToggleSwitchP
 
   return (
     <Label>
-      <span>{(checked ?? false) ? onText : offText}</span>
       <Input checked={checked} type="checkbox" onChange={handleChange} />
       <Switch />
+      <span>{(checked ?? false) ? onText : offText}</span>
     </Label>
   )
 }
