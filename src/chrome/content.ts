@@ -5,11 +5,11 @@
     return userName.children[0].children[0].children[1].children[0].children[0]
       .children[0].children[0].innerHTML
   }
-  const getUsernameFromUserCell = (userCell: Element): string => {
-    return (userCell?.lastChild as Element)?.children[1].children[0].children[0].children[0]
-      .children[1].children[0].children[0].children[0].children[0].children[0]
-      .innerHTML
-  }
+  // const getUsernameFromUserCell = (userCell: Element): string => {
+  //   return (userCell?.lastChild as Element)?.children[1].children[0].children[0].children[0]
+  //     .children[1].children[0].children[0].children[0].children[0].children[0]
+  //     .innerHTML
+  // }
   const getUsernameFromUsername = (username: Element): string => {
     return username.children[1].children[0].children[0].children[0].children[0]
       .children[0].innerHTML
@@ -84,7 +84,7 @@
     // Detects profile page header blue check
     const UserNames = document.querySelectorAll('[data-testid="UserName"]')
     // Detects "You might like" page blue checks
-    const UserCells = document.querySelectorAll('[data-testid="UserCell"]')
+    // const UserCells = document.querySelectorAll('[data-testid="UserCell"]')
     // Detects feed blue checks
     const Usernames = document.querySelectorAll('[data-testid="User-Name"]')
 
@@ -98,14 +98,14 @@
       }
     })
 
-    UserCells.forEach((userCell) => {
-      if (isBlueCheck(userCell)) {
-        if (shouldHide === true) {
-          userCell.setAttribute('style', 'display: none;')
-        }
-        checkNames.add(getUsernameFromUserCell(userCell))
-      }
-    })
+    // UserCells.forEach((userCell) => {
+    //   if (isBlueCheck(userCell)) {
+    //     if (shouldHide === true) {
+    //       userCell.setAttribute('style', 'display: none;')
+    //     }
+    //     checkNames.add(getUsernameFromUserCell(userCell))
+    //   }
+    // })
 
     Usernames.forEach((username) => {
       if (isBlueCheck(username)) {
