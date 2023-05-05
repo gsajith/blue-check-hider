@@ -28,10 +28,29 @@
     })
   }
 
+  const isBlueCheck = (element: Element): boolean => {
+    const checkSelector = '[data-testid="icon-verified"]'
+    const possibleChecks = element.querySelectorAll(checkSelector)
+    if (possibleChecks.length <= 0) {
+      return false
+    }
+    if (possibleChecks[0].children[0].children.length > 1) {
+      return hideGold === true
+    } else {
+      const fill = possibleChecks[0].children[0].children[0].getAttribute('fill')
+      if (fill !== null && typeof fill !== 'undefined') {
+        return hideGrey === true
+      }
+    }
+    return true
+  }
+
   let unhideCount = 0
 
   let shouldHide: (boolean | null) = null
   let fullyHide: (boolean | null) = null
+  let hideGold: (boolean | null) = null
+  let hideGrey: (boolean | null) = null
 
   chrome.storage.local.get('hidingEnabled', (result) => {
     if (result.hidingEnabled !== undefined) {
@@ -47,6 +66,20 @@
     }
   })
 
+  chrome.storage.local.get('hideGoldChecks', (result) => {
+    if (result.hideGoldChecks !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      hideGold = result.hideGoldChecks
+    }
+  })
+
+  chrome.storage.local.get('hideGreyChecks', (result) => {
+    if (result.hideGreyChecks !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      hideGrey = result.hideGreyChecks
+    }
+  })
+
   const readPage = (): void => {
     // Detects profile page header blue check
     const UserNames = document.querySelectorAll('[data-testid="UserName"]')
@@ -55,12 +88,10 @@
     // Detects feed blue checks
     const Usernames = document.querySelectorAll('[data-testid="User-Name"]')
 
-    const checkSelector = '[data-testid="icon-verified"]'
-
     const checkNames = new Set<string>()
 
     UserNames.forEach((userName) => {
-      if (userName.querySelectorAll(checkSelector).length > 0) {
+      if (isBlueCheck(userName)) {
         // This is on profile page, nothing to do here
         // userName.setAttribute('style', 'display: none;')
         checkNames.add(getUsernameFromUserName(userName))
@@ -68,7 +99,7 @@
     })
 
     UserCells.forEach((userCell) => {
-      if (userCell.querySelectorAll(checkSelector).length > 0) {
+      if (isBlueCheck(userCell)) {
         if (shouldHide === true) {
           userCell.setAttribute('style', 'display: none;')
         }
@@ -77,7 +108,7 @@
     })
 
     Usernames.forEach((username) => {
-      if (username.querySelectorAll(checkSelector).length > 0) {
+      if (isBlueCheck(username)) {
         const extractedName = getUsernameFromUsername(username)
         if (shouldHide === true) {
           const hideStyle = 'display: none;'
