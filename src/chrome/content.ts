@@ -48,6 +48,7 @@
   let unhideCount = 0
 
   let shouldHide: (boolean | null) = null
+  let hideRepliesOnly: (boolean | null) = null
   let fullyHide: (boolean | null) = null
   let hideGold: (boolean | null) = null
   let hideGrey: (boolean | null) = null
@@ -56,6 +57,13 @@
     if (result.hidingEnabled !== undefined) {
       // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
       shouldHide = result.hidingEnabled
+    }
+  })
+
+  chrome.storage.local.get('hideRepliesOnly', (result) => {
+    if (result.hideRepliesOnly !== undefined) {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      hideRepliesOnly = result.hideRepliesOnly
     }
   })
 
@@ -81,6 +89,25 @@
   })
 
   const readPage = (): void => {
+    // Check if we're on the timeline
+    if (hideRepliesOnly === true) {
+      const title = document.title
+      if (title.endsWith('Home / X')) {
+        updateStoredCheckNames(new Set<string>())
+        chrome.runtime.sendMessage(
+          {
+            from: 'content',
+            type: 'parsed-page',
+            message: { names: [] }
+          },
+          function (response) {
+            // TODO: Handle response
+          }
+        )
+        return
+      }
+    }
+
     // Detects profile page header blue check
     const UserNames = document.querySelectorAll('[data-testid="UserName"]')
     // Detects "You might like" page blue checks

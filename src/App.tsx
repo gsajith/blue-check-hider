@@ -9,10 +9,12 @@ export const App = (): JSX.Element => {
   const [allNames, setAllNames] = useState<string[]>([])
   const [currentTabId, setCurrentTabId] = useState<number>(-1)
   const [hidingEnabled, setHidingEnabled] = useState<boolean>(true)
+  const [hideRepliesOnly, setHideRepliesOnly] = useState<boolean>(false)
   const [hideGoldChecks, setHideGoldChecks] = useState<boolean>(true)
   const [hideGreyChecks, setHideGreyChecks] = useState<boolean>(true)
   const [fullyHide, setFullyHide] = useState<boolean>(false)
   const initialLoadFlagHiding = React.useRef(true)
+  const initialLoadFlagHideRepliesOnly = React.useRef(true)
   const initialLoadFlagFullyHide = React.useRef(true)
   const initialLoadFlagHideGold = React.useRef(true)
   const initialLoadFlagHideGrey = React.useRef(true)
@@ -50,6 +52,20 @@ export const App = (): JSX.Element => {
       chrome.storage.local.set({ hidingEnabled })
     }
   }, [hidingEnabled])
+
+  useEffect(() => {
+    // Save enabled state to local storage
+    if (initialLoadFlagHideRepliesOnly.current) {
+      chrome.storage.local.get('hideRepliesOnly').then((result) => {
+        if (result.hideRepliesOnly === undefined) {
+          chrome.storage.local.set({ hideRepliesOnly })
+        }
+      })
+      initialLoadFlagHideRepliesOnly.current = false
+    } else {
+      chrome.storage.local.set({ hideRepliesOnly })
+    }
+  }, [hideRepliesOnly])
 
   useEffect(() => {
     // Save enabled state to local storage
@@ -102,6 +118,13 @@ export const App = (): JSX.Element => {
         setHidingEnabled(true)
       }
     })
+    chrome.storage.local.get('hideRepliesOnly').then((result) => {
+      if (result.hideRepliesOnly !== undefined) {
+        setHideRepliesOnly(result.hideRepliesOnly)
+      } else {
+        setHideRepliesOnly(false)
+      }
+    })
     chrome.storage.local.get('fullyHide').then((result) => {
       if (result.fullyHide !== undefined) {
         setFullyHide(result.fullyHide)
@@ -141,6 +164,10 @@ export const App = (): JSX.Element => {
 
       <div style={{ padding: 12 }}>
         <ToggleSwitch onText="Don't even show the 'tweet hidden' message" offText="Don't even show the 'tweet hidden' message" handleChecked={(checked) => { setFullyHide(checked) }} checked={fullyHide} />
+      </div>
+
+      <div style={{ padding: 12 }}>
+        <ToggleSwitch onText="Applies to replies only" offText="Applies to all tweets" handleChecked={(checked) => { setHideRepliesOnly(checked) }} checked={hideRepliesOnly} />
       </div>
 
       <Accordion items={names} title={'found on this page'} />
